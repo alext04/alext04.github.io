@@ -29,11 +29,13 @@ export interface Profile {
   name: string;
   /** Short role label, e.g. "Software Engineer". */
   role: string;
+  /** Where the person works and studied — the one-line identity summary. */
+  currently: string;
   /** One-line positioning statement used as the <title> and OG description. */
   headline: string;
-  /** Hero sub-headline, rendered as the large secondary heading. */
+  /** Hero sub-headline, rendered as the large accent heading. */
   tagline: string;
-  /** Hero supporting paragraph. */
+  /** Hero supporting paragraph. Deliberately short. */
   summary: string;
   /** Longer-form prose for the About section, one string per paragraph. */
   about: string[];
@@ -49,7 +51,7 @@ export interface Experience {
   location: string;
   /** Display string, e.g. "Jul 2026 – Present". Avoids Date parsing entirely. */
   period: string;
-  /** Used for <time> semantics and JSON-LD; must be YYYY-MM. */
+  /** Used for <time> semantics; must be YYYY-MM. */
   startDate: string;
   /** Omit for current roles. Must be YYYY-MM. */
   endDate?: string;
@@ -59,36 +61,33 @@ export interface Experience {
   stack: string[];
 }
 
-/** A research project or investigation, rendered in the Research section. */
-export interface ResearchItem {
-  title: string;
-  /** Field of study, e.g. "Game Theory · Mechanism Design". */
-  field: string;
-  status: "Ongoing" | "Completed";
-  /** Free-text period label. */
-  period: string;
-  /** What problem the work addresses. */
-  problem: string;
-  /** What was actually built or modelled. */
-  approach: string[];
-  /** Methods and tooling, rendered as tags. */
-  techniques: string[];
-}
-
-/** A project, rendered either as a flagship card or an archive row. */
+/**
+ * A project card.
+ *
+ * Research work and built projects share one card type so they can live in a
+ * single section: a research item is simply a project whose `kind` is
+ * "research", which brings `field`, `problem`, `approach`, and `reportUrl`
+ * into play and renders it with a badge and a report link.
+ */
 export interface Project {
   title: string;
-  /** One-line summary shown in the archive list. */
+  /** One-line summary. Kept short — this is the card's lede. */
   summary: string;
-  /** Longer impact-led description shown on flagship cards. */
-  description: string;
-  /**
-   * Featured projects render as full-width cards with full descriptions.
-   * Non-featured projects collapse into the compact archive list.
-   */
-  featured: boolean;
+  /** Optional longer note for built work. */
+  description?: string;
+  /** "research" adds the research badge and report affordances. */
+  kind: "project" | "research";
+  /** Display string, e.g. "Mar 2025 – Apr 2025". */
   period: string;
   tech: string[];
+  /** Research only: the field of study shown under the title. */
+  field?: string;
+  /** Research only: open question the work addresses. */
+  problem?: string;
+  /** Research only: what was actually built or modelled. */
+  approach?: string[];
+  /** Research only: link to a public write-up or report. */
+  reportUrl?: string;
   /** Optional source link; omit when there is no public repository. */
   repo?: string;
 }
@@ -110,11 +109,4 @@ export interface Education {
   startDate: string;
   endDate: string;
   details: string[];
-}
-
-/** An award or honour worth surfacing alongside education. */
-export interface Award {
-  title: string;
-  issuer: string;
-  year: string;
 }

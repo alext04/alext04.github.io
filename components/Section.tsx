@@ -6,7 +6,6 @@ interface SectionProps {
   id: string;
   index: number;
   title: string;
-  description?: ReactNode;
   children: ReactNode;
   /** Widen the container for grid-heavy sections. */
   wide?: boolean;
@@ -23,7 +22,6 @@ export default function Section({
   id,
   index,
   title,
-  description,
   children,
   wide = false,
 }: SectionProps) {
@@ -36,11 +34,7 @@ export default function Section({
       <div className={`mx-auto w-full ${wide ? "max-w-6xl" : "max-w-4xl"}`}>
         <Reveal from="none">
           <div id={`${id}-heading`}>
-            <SectionHeading
-              index={index}
-              title={title}
-              description={description}
-            />
+            <SectionHeading index={index} title={title} />
           </div>
         </Reveal>
         <Reveal delay={0.05}>{children}</Reveal>

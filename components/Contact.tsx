@@ -13,7 +13,6 @@ export default function Contact() {
       id="contact"
       index={sectionIndex("contact")}
       title="Contact"
-      description="Open to conversations about backend engineering, distributed systems, and applied AI. The fastest way to reach me is email."
     >
       <div className="grid gap-6 md:grid-cols-2">
         {/* Direct details */}

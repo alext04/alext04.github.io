@@ -40,6 +40,8 @@ app/
 
 content/
   profile.ts            ← SINGLE SOURCE OF TRUTH for all site content
+                        (profile, experience, projects, skills, education,
+                         and the ordered `sections` list)
 
 lib/
   types.ts              Domain types for the content layer
@@ -51,11 +53,18 @@ components/
   SectionHeading.tsx    Heading with auto-derived ordinal
   motion/Reveal.tsx     The only scroll-reveal implementation
   Navbar.tsx            Client: active-section tracking, mobile menu
-  Hero.tsx  About.tsx  Experience.tsx  Research.tsx
+  Hero.tsx  About.tsx  Experience.tsx
   Projects.tsx  Skills.tsx  Education.tsx  Contact.tsx  Footer.tsx
   CopyButton.tsx        Client: clipboard with fallback
   linkIcons.tsx         Label → icon map
 ```
+
+### Projects and research
+
+`projects` is a single list rendered as one card per entry. Research work is
+not a separate section: such an entry sets `kind: "research"`, which adds the
+badge, the `field` label, the `problem`/`approach` blocks, and an optional
+`reportUrl` link to a published report.
 
 ### Updating content from a new resume
 

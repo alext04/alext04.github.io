@@ -11,8 +11,6 @@ import { profile } from "@/content/profile";
  * ships essentially no JavaScript of its own.
  */
 export default function Hero() {
-  const currentRole = "Software Engineer @ Bridgera";
-
   return (
     <section
       id="top"
@@ -36,7 +34,7 @@ export default function Hero() {
               aria-hidden="true"
               className="h-1.5 w-1.5 rounded-full bg-emerald-400"
             />
-            {currentRole}
+            {profile.currently}
           </p>
         </Reveal>
 
@@ -53,7 +51,7 @@ export default function Hero() {
         </Reveal>
 
         <Reveal delay={0.15} from="none">
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-ink-muted">
             {profile.summary}
           </p>
         </Reveal>

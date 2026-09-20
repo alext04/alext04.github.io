@@ -17,7 +17,6 @@ export default function Skills() {
       index={sectionIndex("skills")}
       title="Skills"
       wide
-      description="Technologies I use in production, grouped by where they sit in the stack."
     >
       <div className="grid gap-6 md:grid-cols-3">
         {skillGroups.map((group, index) => (

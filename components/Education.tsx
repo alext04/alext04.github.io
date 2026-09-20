@@ -1,7 +1,6 @@
-import { FaTrophy } from "react-icons/fa";
 import Section from "@/components/Section";
 import Reveal from "@/components/motion/Reveal";
-import { awards, education, sectionIndex } from "@/content/profile";
+import { education, sectionIndex } from "@/content/profile";
 import { splitPeriod } from "@/lib/dates";
 
 export default function Education() {
@@ -10,7 +9,6 @@ export default function Education() {
       id="education"
       index={sectionIndex("education")}
       title="Education"
-      description="Formal background, plus the recognition worth mentioning."
     >
       <ol className="space-y-8">
         {education.map((entry, index) => {
@@ -61,39 +59,6 @@ export default function Education() {
         })}
       </ol>
 
-      {awards.length > 0 ? (
-        <div className="mt-12">
-          <Reveal from="none">
-            <h3 className="mb-5 font-mono text-xs uppercase tracking-wider text-ink-subtle">
-              Awards
-            </h3>
-          </Reveal>
-
-          <ul className="space-y-3">
-            {awards.map((award, index) => (
-              <Reveal
-                as="li"
-                key={award.title}
-                delay={index * 0.06}
-                from="left"
-                className="flex items-start gap-3 rounded-card border border-line bg-surface/60 p-4"
-              >
-                <FaTrophy
-                  size={14}
-                  aria-hidden
-                  className="mt-0.5 shrink-0 text-accent"
-                />
-                <div>
-                  <p className="text-sm font-medium text-ink">{award.title}</p>
-                  <p className="mt-0.5 text-xs text-ink-subtle">
-                    {award.issuer} · {award.year}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </ul>
-        </div>
-      ) : null}
     </Section>
   );
 }

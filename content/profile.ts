@@ -1,10 +1,8 @@
 import type {
-  Award,
   Education,
   Experience,
   Profile,
   Project,
-  ResearchItem,
   SkillGroup,
 } from "@/lib/types";
 
@@ -19,14 +17,14 @@ import type {
 export const profile: Profile = {
   name: "Alex Thuruthel",
   role: "Software Engineer",
+  currently: "Software Engineer at Bridgera · IIIT Hyderabad",
   headline: "Software Engineer building backend systems and AI infrastructure",
   tagline: "I build backend systems and AI infrastructure.",
   summary:
-    "Software engineer at Bridgera, where I build the backend for an enterprise AI-agent platform — event-driven orchestration, multi-tenant data modelling, and validated structured extraction from third-party systems. I care about systems that stay correct and resumable under failure.",
+    "Currently at Bridgera, building backend systems for an enterprise AI-agent platform.",
   about: [
-    "I'm a software engineer working on backend and distributed systems, currently at Bridgera in Hyderabad. My day-to-day is building the execution layer of an enterprise AI-agent platform: event-driven workflows on AWS Step Functions and Lambda, multi-tenant data models, and extraction pipelines that return validated structured data from systems that have no API at all.",
-    "A lot of my work sits where AI meets infrastructure that has to be trustworthy. That means explicit job states and resumable workflows rather than fire-and-forget scripts, configuration-driven onboarding instead of per-customer code, and treating failure as the expected case. I've also built retrieval-augmented services over financial data, and a distributed training system that keeps raw data isolated on client nodes.",
-    "I graduated from IIIT Hyderabad with a B.Tech in Computer Science Engineering in July 2026. Outside of work I'm usually reading about distributed systems, mechanism design, or quantitative finance — and occasionally writing C for fun.",
+    "I'm a software engineer from Hyderabad, currently at Bridgera. I work on backend and distributed systems, mostly where AI meets infrastructure that has to be dependable.",
+    "I studied Computer Science at IIIT Hyderabad, and I'm drawn to problems where correctness and failure handling matter more than the happy path.",
   ],
   resumePath: "/resume.pdf",
   contact: {
@@ -101,103 +99,108 @@ export const experiences: Experience[] = [
   },
 ];
 
-export const research: ResearchItem[] = [
+/**
+ * Every project, most recent first. Research work shares the card type and is
+ * distinguished by `kind: "research"`, which adds the badge, the problem and
+ * approach blocks, and the report link.
+ */
+export const projects: Project[] = [
   {
     title: "Custom Federated Learning Framework",
+    kind: "research",
     field: "Distributed Systems · Privacy-Preserving ML",
-    status: "Ongoing",
+    summary:
+      "A distributed training system that keeps raw data on client nodes while staying fault-tolerant.",
     period: "Sep 2025 – Present",
+    tech: ["Ray", "PyTorch", "WireGuard", "LoRA", "Python"],
     problem:
       "Centralised training requires pooling raw data, which is often impossible for privacy or regulatory reasons. Most federated frameworks either leak data through the aggregation path or assume clients are reliable.",
     approach: [
       "Designed a distributed training system with Ray for dynamic client registration, training, aggregation, and fault-tolerant task execution, while keeping raw data isolated on client nodes.",
       "Secured client–server communication with WireGuard and used LoRA adapters to reduce communication overhead during model updates.",
     ],
-    techniques: ["Ray", "PyTorch", "WireGuard", "LoRA", "Python"],
   },
   {
     title: "User Adherence to AI Financial Advisors",
+    kind: "research",
     field: "Game Theory · Mechanism Design",
-    status: "Ongoing",
+    summary:
+      "Modelling advisor–user interaction as a game to find strategies that maximise adherence, not just returns.",
     period: "Aug 2025 – Present",
+    tech: ["MILP", "Game Theory", "Prospect Theory", "Statistics"],
     problem:
       "Robo-advisors optimise for portfolio returns but are frequently abandoned by users. The question is whether advisor strategy can be chosen to maximise adherence, not just utility.",
     approach: [
       "Modelled advisor–user interaction as a Stackelberg game using bounded rationality and Prospect Theory to represent decisions under risk.",
       "Implemented MILP-based optimisation and factorial experiments to compare advisor strategies and statistically evaluate their effect on user adherence.",
     ],
-    techniques: ["MILP", "Game Theory", "Prospect Theory", "Statistics"],
+    reportUrl:
+      "https://drive.google.com/file/d/1fyIIIINzQxw23Y5V0SRcHWwnc1ftq2BV/view?usp=sharing",
   },
-];
-
-export const projects: Project[] = [
   {
     title: "Legends of Stonks — Financial Platform",
+    kind: "project",
     summary:
       "Microservices financial platform for accounts, analytics, and simulated market transactions.",
     description:
-      "Architected a microservices-based financial platform with a FastAPI REST API and PostgreSQL for user accounts, financial analytics, and simulated market transactions. Designed the relational schemas and containerized services with Docker and Nginx, then integrated CI/CD workflows for consistent deployment.",
-    featured: true,
+      "Microservices platform with a FastAPI REST API and PostgreSQL for user accounts, financial analytics, and simulated market transactions. Relational schemas and services containerised with Docker and Nginx, with CI/CD for consistent deployment.",
     period: "Mar 2025 – Apr 2025",
     tech: ["FastAPI", "PostgreSQL", "Docker", "Nginx", "CI/CD", "Next.js"],
   },
   {
     title: "Automated Refactoring Pipeline",
+    kind: "project",
     summary:
       "AI-assisted developer tool that detects code smells and opens Git pull requests with fixes.",
     description:
-      "Built an AI-assisted developer tool that detected code smells, generated refactoring recommendations, and integrated changes into Git pull-request workflows. The interesting problem was never prompting the model — it was making generated edits reviewable and safely reversible inside an existing review process.",
-    featured: true,
+      "Developer tool that detected code smells, generated refactoring recommendations, and integrated changes into Git pull-request workflows — built so generated edits stay reviewable and reversible inside an existing review process.",
     period: "Feb 2025",
     tech: ["Python", "Gemini", "DeepSeek", "Git", "LLM Integration"],
   },
   {
     title: "Custom Unix Shell",
+    kind: "project",
     summary:
       "Command-line interpreter in C with process orchestration, piping, and I/O redirection.",
     description:
-      "Implemented a custom command-line interpreter in C, handling low-level process orchestration using fork, exec, and wait system calls, with support for I/O redirection and piping.",
-    featured: true,
+      "Command-line interpreter in C handling low-level process orchestration with fork, exec, and wait system calls, plus I/O redirection and piping.",
     period: "Feb 2025",
     tech: ["C", "Linux", "System Calls", "Process Management"],
   },
   {
     title: "Network File System",
-    summary:
-      "Concurrent NFS in C supporting multi-client access over sockets.",
+    kind: "project",
+    summary: "Concurrent NFS in C supporting multi-client access over sockets.",
     description:
-      "Implemented a concurrent Network File System in C with low-level data structures for efficient file storage, handling concurrent client requests through multithreading and socket programming.",
-    featured: false,
+      "Concurrent Network File System in C with low-level data structures for efficient file storage, handling concurrent client requests through multithreading and socket programming.",
     period: "Nov 2023",
     tech: ["C", "Sockets", "Multithreading", "Linux"],
   },
   {
     title: "TAFEA — AI Teaching Assistant",
+    kind: "project",
     summary:
       "React application helping TFI fellows manage classroom activity, with LLM text generation.",
     description:
-      "Developed a responsive web application using React to assist TFI fellows in managing classroom activities, integrating Gemini for real-time text generation and customization.",
-    featured: false,
+      "Responsive web application using React to assist TFI fellows in managing classroom activities, integrating Gemini for real-time text generation and customization.",
     period: "Sep 2024 – Nov 2024",
     tech: ["React", "MongoDB", "Gemini API", "TypeScript"],
   },
   {
     title: "Multimodal Meme Classifier",
-    summary:
-      "YOLOv8 + BERT pipeline fusing visual objects with textual sentiment.",
+    kind: "project",
+    summary: "YOLOv8 + BERT pipeline fusing visual objects with textual sentiment.",
     description:
-      "Developed a multimodal pipeline using YOLOv8 for object detection and BERT for text extraction, implementing fusion techniques to analyse visual objects alongside textual sentiment.",
-    featured: false,
+      "Multimodal pipeline using YOLOv8 for object detection and BERT for text extraction, fusing visual objects with textual sentiment.",
     period: "Feb 2024",
     tech: ["YOLOv8", "BERT", "PyTorch", "Computer Vision"],
   },
   {
     title: "Smart Medical Query App",
-    summary:
-      "Grounding Llama 2 on MedQuad for context-aware medical Q&A. Top 5, Megathon '23.",
+    kind: "project",
+    summary: "Grounding Llama 2 on MedQuad for context-aware medical Q&A.",
     description:
-      "Engineered a context-aware AI assistant using Llama 2 with domain-specific grounding on the MedQuad dataset. Placed in the top 5 of the Qualcomm-judged Megathon at IIIT Hyderabad.",
-    featured: false,
+      "Context-aware AI assistant using Llama 2 with domain-specific grounding on the MedQuad dataset. Top 5 of the Qualcomm-judged Megathon at IIIT Hyderabad.",
     period: "Oct 2023",
     tech: ["Python", "Llama 2", "NLP", "Quantization"],
   },
@@ -247,7 +250,7 @@ export const education: Education[] = [
     period: "Oct 2022 – Jul 2026",
     startDate: "2022-10",
     endDate: "2026-07",
-    details: ["Member, Electronics and Robotics Club"],
+    details: ["Undergraduate Researcher"],
   },
   {
     institution: "Carmel School Kuwait",
@@ -260,14 +263,6 @@ export const education: Education[] = [
   },
 ];
 
-export const awards: Award[] = [
-  {
-    title: "5th Place, Megathon '23",
-    issuer: "ECell IIIT Hyderabad · judged by Qualcomm",
-    year: "2023",
-  },
-];
-
 /**
  * Navigation sections in page order. Section numbers are derived from this
  * array's index, so adding or reordering a section can never desync the
@@ -276,7 +271,6 @@ export const awards: Award[] = [
 export const sections = [
   { id: "about", label: "About" },
   { id: "experience", label: "Experience" },
-  { id: "research", label: "Research" },
   { id: "projects", label: "Projects" },
   { id: "skills", label: "Skills" },
   { id: "education", label: "Education" },

@@ -40,7 +40,6 @@ export default function Experience() {
       index={sectionIndex("experience")}
       title="Experience"
       wide
-      description="Production backend work — event-driven orchestration, multi-tenant data modelling, and applied AI in systems that have to stay reliable."
     >
       <ol className="space-y-12">
         {experiences.map((job, index) => {
