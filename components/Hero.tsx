@@ -1,63 +1,110 @@
-"use client";
+import { FaArrowRight, FaFilePdf } from "react-icons/fa";
+import Reveal from "@/components/motion/Reveal";
+import { linkIcons, ICON_SIZE } from "@/components/linkIcons";
+import { profile } from "@/content/profile";
 
-import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
-
+/**
+ * Hero.
+ *
+ * Server Component: everything here is static markup. The only client code is
+ * the <Reveal> wrappers and the `.bg-grid` CSS, so this above-the-fold section
+ * ships essentially no JavaScript of its own.
+ */
 export default function Hero() {
-  return (
-    <section id="home" className="min-h-screen flex items-center justify-center px-6 py-20">
-      <div className="max-w-4xl w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <p className="text-red-500 font-medium mb-4">Hi, my name is</p>
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
-            Alex Thuruthel.
-          </h1>
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-400 mb-6">
-            I build things for the web.
-          </h2>
-          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mb-8 leading-relaxed">
-            I'm a Computer Science Engineering student at IIIT Hyderabad, 
-            specializing in AI, distributed systems, and full-stack development. 
-            Currently exploring agentic AI, federated learning, and quantitative finance.
-          </p>
-          
-          <div className="flex gap-4 mb-12">
-            <a
-              href="https://github.com/alext04"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-red-500 transition-colors"
-            >
-              <FaGithub size={28} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/alex-thuruthel-a2a8b123b/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-red-500 transition-colors"
-            >
-              <FaLinkedin size={28} />
-            </a>
-            <a
-              href="mailto:alexthuruthel04@gmail.com"
-              className="text-gray-400 hover:text-red-500 transition-colors"
-            >
-              <FaEnvelope size={28} />
-            </a>
-          </div>
+  const currentRole = "Software Engineer @ Bridgera";
 
-          <a
-            href="#experience"
-            className="inline-block px-8 py-4 border-2 border-red-500 text-red-500 rounded font-medium 
-                       hover:bg-red-500/10 transition-colors"
-          >
-            Check out my work
-          </a>
-        </motion.div>
+  return (
+    <section
+      id="top"
+      aria-label="Introduction"
+      className="relative flex min-h-screen items-center overflow-hidden px-6 pt-24 pb-16"
+    >
+      {/* Decorative backdrop, hidden from assistive tech. */}
+      <div
+        aria-hidden="true"
+        className="bg-grid bg-grid-mask pointer-events-none absolute inset-0"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[620px] -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]"
+      />
+
+      <div className="relative mx-auto w-full max-w-4xl">
+        <Reveal from="none">
+          <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3 py-1.5 font-mono text-xs text-ink-muted">
+            <span
+              aria-hidden="true"
+              className="h-1.5 w-1.5 rounded-full bg-emerald-400"
+            />
+            {currentRole}
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.05} from="none">
+          <h1 className="text-4xl font-bold tracking-tight text-ink sm:text-6xl">
+            {profile.name}
+          </h1>
+        </Reveal>
+
+        <Reveal delay={0.1} from="none">
+          <p className="mt-4 text-2xl font-semibold tracking-tight text-accent sm:text-4xl">
+            {profile.tagline}
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.15} from="none">
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg">
+            {profile.summary}
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.2} from="none">
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <a
+              href={profile.resumePath}
+              className="inline-flex items-center gap-2 rounded bg-accent px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-soft"
+            >
+              <FaFilePdf size={15} aria-hidden />
+              Download Resume
+            </a>
+            <a
+              href="#contact"
+              className="group inline-flex items-center gap-2 rounded border border-line-strong px-5 py-3 text-sm font-medium text-ink transition-colors hover:border-accent/60 hover:text-accent"
+            >
+              Get in touch
+              <FaArrowRight
+                size={13}
+                aria-hidden
+                className="transition-transform group-hover:translate-x-0.5"
+              />
+            </a>
+
+            <ul className="ml-1 flex items-center gap-1">
+              {profile.contact.links.map((link) => {
+                const Icon = linkIcons[link.label];
+                if (!Icon) return null;
+                return (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      {...(link.external
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                      aria-label={
+                        link.external
+                          ? `${link.label} (opens in a new tab)`
+                          : link.label
+                      }
+                      className="grid h-11 w-11 place-items-center rounded text-ink-subtle transition-colors hover:bg-surface hover:text-accent"
+                    >
+                      <Icon size={ICON_SIZE} aria-hidden />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

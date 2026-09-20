@@ -1,65 +1,96 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaEnvelope, FaFileDownload } from "react-icons/fa";
+import { FaEnvelope, FaFilePdf, FaMapMarkerAlt, FaPhone } from "react-icons/fa";
+import Section from "@/components/Section";
+import Reveal from "@/components/motion/Reveal";
+import CopyButton from "@/components/CopyButton";
+import { linkIcons, ICON_SIZE } from "@/components/linkIcons";
+import { profile, sectionIndex } from "@/content/profile";
 
 export default function Contact() {
-  return (
-    <section id="contact" className="py-20 px-6 max-w-3xl mx-auto text-center">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-      >
-        <p className="text-red-500 font-medium mb-4">05. What's Next?</p>
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-          Get In Touch
-        </h2>
-        <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-          I'm currently looking for new opportunities in software engineering, 
-          AI/ML, and quantitative finance. Whether you have a question, want to 
-          collaborate, or just want to say hi, feel free to reach out!
-        </p>
+  const { email, phone, location, links } = profile.contact;
 
-        <div className="flex justify-center gap-6 mb-12">
-          <a
-            href="https://github.com/alext04"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-red-500 transition-colors"
-          >
-            <FaGithub size={32} />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/alex-thuruthel-a2a8b123b/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-red-500 transition-colors"
-          >
-            <FaLinkedin size={32} />
-          </a>
-          <a
-            href="mailto:alexthuruthel04@gmail.com"
-            className="text-gray-400 hover:text-red-500 transition-colors"
-          >
-            <FaEnvelope size={32} />
-          </a>
+  return (
+    <Section
+      id="contact"
+      index={sectionIndex("contact")}
+      title="Contact"
+      description="Open to conversations about backend engineering, distributed systems, and applied AI. The fastest way to reach me is email."
+    >
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Direct details */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-3 rounded-card border border-line bg-surface/60 p-4">
+            <FaEnvelope size={ICON_SIZE} aria-hidden className="shrink-0 text-accent" />
+            <a
+              href={`mailto:${email}`}
+              className="flex-grow break-all text-sm text-ink transition-colors hover:text-accent"
+            >
+              {email}
+            </a>
+            <CopyButton value={email} label="email address" />
+          </div>
+
+          <div className="flex items-center gap-3 rounded-card border border-line bg-surface/60 p-4">
+            <FaPhone size={ICON_SIZE} aria-hidden className="shrink-0 text-accent" />
+            <a
+              href={`tel:${phone.replace(/\s/g, "")}`}
+              className="flex-grow text-sm text-ink transition-colors hover:text-accent"
+            >
+              {phone}
+            </a>
+            <CopyButton value={phone} label="phone number" />
+          </div>
+
+          <div className="flex items-center gap-3 rounded-card border border-line bg-surface/60 p-4">
+            <FaMapMarkerAlt
+              size={ICON_SIZE}
+              aria-hidden
+              className="shrink-0 text-accent"
+            />
+            <span className="text-sm text-ink">{location}</span>
+          </div>
         </div>
 
-        <a
-          href="mailto:alexthuruthel04@gmail.com"
-          className="inline-block px-8 py-4 border-2 border-red-500 text-red-500 rounded font-medium 
-                     hover:bg-red-500/10 transition-colors"
-        >
-          Say Hello
-        </a>
-      </motion.div>
+        {/* Profiles + resume */}
+        <div className="rounded-card border border-line bg-surface/60 p-6">
+          <h3 className="font-mono text-xs uppercase tracking-wider text-ink-subtle">
+            Elsewhere
+          </h3>
 
-      <footer className="mt-20 text-gray-500 text-sm">
-        <p>Designed & Built by Alex Thuruthel</p>
-        <p className="mt-2">© {new Date().getFullYear()} All rights reserved.</p>
-      </footer>
-    </section>
+          <ul className="mt-4 space-y-2">
+            {links.map((link) => {
+              const Icon = linkIcons[link.label];
+              if (!Icon) return null;
+              return (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    {...(link.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="flex items-center gap-3 rounded px-2 py-2.5 text-sm text-ink-muted transition-colors hover:bg-surface-raised hover:text-accent"
+                  >
+                    <Icon size={ICON_SIZE} aria-hidden />
+                    <span>{link.label}</span>
+                    {link.external ? (
+                      <span className="sr-only">(opens in a new tab)</span>
+                    ) : null}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+
+          <Reveal from="none" className="mt-6 border-t border-line pt-6">
+            <a
+              href={profile.resumePath}
+              className="inline-flex items-center gap-2 rounded bg-accent px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-soft"
+            >
+              <FaFilePdf size={15} aria-hidden />
+              Download Resume
+            </a>
+          </Reveal>
+        </div>
+      </div>
+    </Section>
   );
 }
