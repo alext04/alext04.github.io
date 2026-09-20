@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { profile, sections } from "@/content/profile";
+import { profile } from "@/content/profile";
 import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
@@ -68,54 +68,54 @@ export const viewport = {
 };
 
 /**
- * JSON-LD Person schema.
+ * JSON-LD structured data.
  *
- * Gives search engines an unambiguous, structured description of who this page
- * is about — employer, alumniOf, and sameAs profiles — instead of inferring it
- * from prose. Built from the same content layer the page renders, so it cannot
- * drift out of sync with what is displayed.
+ * `ProfilePage` wrapping a `Person` is the schema.org pattern for a personal
+ * site — a bare `Person` at the root is valid but loses the page/entity
+ * relationship, and `Person.hasPart` (used previously) is not a real property.
+ *
+ * Built from the same content layer the page renders, so it cannot drift out of
+ * sync with what a visitor actually sees.
  */
-function PersonJsonLd() {
-  const current = profile.contact.links
-    .filter((link) => link.external || link.href.startsWith("mailto:"))
+function StructuredData() {
+  const sameAs = profile.contact.links
+    .filter((link) => link.href.startsWith("http"))
     .map((link) => link.href);
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: profile.name,
-    jobTitle: profile.role,
-    description: SITE_DESCRIPTION,
-    url: SITE_URL,
-    email: `mailto:${profile.contact.email}`,
-    telephone: profile.contact.phone,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Hyderabad",
-      addressCountry: "IN",
+    "@type": "ProfilePage",
+    mainEntity: {
+      "@type": "Person",
+      name: profile.name,
+      jobTitle: profile.role,
+      description: SITE_DESCRIPTION,
+      url: SITE_URL,
+      email: `mailto:${profile.contact.email}`,
+      telephone: profile.contact.phone,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Hyderabad",
+        addressCountry: "IN",
+      },
+      worksFor: {
+        "@type": "Organization",
+        name: "Bridgera",
+      },
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "International Institute of Information Technology, Hyderabad",
+      },
+      knowsAbout: [
+        "Backend Engineering",
+        "Distributed Systems",
+        "AWS",
+        "Event-Driven Architecture",
+        "Retrieval-Augmented Generation",
+        "Federated Learning",
+      ],
+      sameAs,
     },
-    worksFor: {
-      "@type": "Organization",
-      name: "Bridgera",
-    },
-    alumniOf: {
-      "@type": "CollegeOrUniversity",
-      name: "International Institute of Information Technology, Hyderabad",
-    },
-    knowsAbout: [
-      "Backend Engineering",
-      "Distributed Systems",
-      "AWS",
-      "Event-Driven Architecture",
-      "Retrieval-Augmented Generation",
-      "Federated Learning",
-    ],
-    sameAs: current,
-    hasPart: sections.map((section) => ({
-      "@type": "WebPageElement",
-      name: section.label,
-      url: `${SITE_URL}/#${section.id}`,
-    })),
   };
 
   return (
@@ -148,7 +148,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
-        <PersonJsonLd />
+        <StructuredData />
       </body>
     </html>
   );
